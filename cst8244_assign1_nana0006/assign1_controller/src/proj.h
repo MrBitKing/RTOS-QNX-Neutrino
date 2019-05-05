@@ -5,22 +5,8 @@
  *  This approach will make your code more readable :)
  */
 
-#include <stdio.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/dispatch.h>
-#include <sys/neutrino.h>
-#include <sys/netmgr.h>
-
-
 #ifndef PROJ_H_
 #define PROJ_H_
-#define EOK	                  0
-#define SRVR_INVALIDCOMMAND   1
-
-//typedef struct _pulse msg_header_t;
 
 void *ready_state();
 void *left_scan();
@@ -36,13 +22,9 @@ void *guard_left_lock();
 void *guard_right_lock();
 void exit_state();
 void invalid_command();
-
-
-#define ATTACH_POINT "myname"
-#define ATTACH_POINT2 "myname2"
-
-typedef void *(*StateFunc)();
-
+int strcmp();
+int getpid();
+int sleep();
 
 #define NUM_STATES 14
 typedef enum {
@@ -122,22 +104,18 @@ const char *inMessage[NUM_INPUTS] = {
 };
 
 struct person_details{
-
-	//msg_header_t hdr;
 	int id;
 	int weight;
 	int state;
 	char event[128];
-
 } typedef Person;
 
 struct controller_details {
-
 	int error;
 	char errorMsg[128];
-
 } typedef controller_response_t;
 
-
+#define EOK	                  0
+#define SRVR_INVALIDCOMMAND   1
 
 #endif /* PROJ_H_ */
