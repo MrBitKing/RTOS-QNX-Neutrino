@@ -1,8 +1,11 @@
 CST8244 – Real-Time Programming
+
 Page 1 of 5
 Assignment 1
+
 This assignment consists of designing and building a set of programs to simulate a building entry controller system and provide a testing harness. The system is similar to that discussed during the lectures – a two door system with card scanners on each door, a scale that weighs the person after they have entered the space between the two doors, and a human guard that uses a switch to open each of the doors.
 Details:
+
 1. People enter the entry control space from the left to enter the building and enter the control space from the right to exit the building.
 2. Each person requesting to enter or exit the building scans their unique personal id card containing an integer person_id number. The scanner sends a message to the controller with the input information (which door opening is being requested, and which person_id is being used.; (e.g., “left 12345”)
 3. Only 1 person at a time should be able to be inside the lock.
@@ -81,6 +84,7 @@ Page 4 of 5
 Deliverables
 Please note: the deliverables have changed for this assignment. Please read and note the differences.
 Upload the following deliverables to Brightspace:
+
 1. Export your projects as a zip-archive file.
 Momentics IDE provides a wizard to export your project:
 File > Export… > General > Archive File > Next > Select All > Click ‘Browse…” > Save As: cst8244_assign1_yourAlgonquinCollegeUsername.zip > Save > Finish
@@ -102,7 +106,6 @@ rc
 grl
 exit
 Reference Screenshots: your screenshots for the first scenario should look very, very similar to mine. See “Memo: Reference Screenshots” in the “Assignment 1” folder on Brightspace.
-
 4. A “README.txt” file reporting the status of your assignment. Follow this template:
 Title {give your work a title}
 Author
@@ -110,8 +113,10 @@ Author
 Include your partner’s name (if you have one)}
 {IF you worked with a partner, provide a brief description of what you worked on, and contributed to the assignment.}
 Status
+
 CST8244 – Real-Time Programming
 Page 5 of 5
+
 {Tell me that status of your project. Does your program meet all of the requirements of the specification? Does your program run, more importantly, does your program behave as expected? Does your program terminate unexpectantly due to a run-time error? Any missing requirements? A small paragraph is sufficient.}
 Known Issues
 {Tell me of any known issues that you’ve encountered.}
