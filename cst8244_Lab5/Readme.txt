@@ -1,58 +1,68 @@
 CST8244 – Real-Time Programming
-Lab 6 – Yet Another Simple Resource Manager (YANResMgr)
-
+Lab 5 – Namespace
 Introduction
-
-You will be building two programs: myController and myDevice. The programs will run independently but synchronize by having the myDevice program install a resource manager (aka device driver) within QNX Neutrino.
-The device status will then be visible to the myController by actively reading directly from the device, or by receiving alert pulses from the device.
+To successfully create a communications channel on QNX’s Neutrino RTOS, you require the following pieces of information:
+• the Node Descriptor
+• the server’s Process ID
+• the server’s CHannel ID
+These three pieces of information are known as the: ND/PID/CHID
+Unfortunately, two pieces of information ---- the PID and CHID --- are not known until run-time, when the server application has been launched. This is not scalable, and makes it difficult to create a resource manager, which is QNX’s version of a device driver on other operating systems, such as Linux.
+A better solution, and one that is more scalable, is to make use of QNX’s namespace. To implement this strategy, make the following changes to Phase I of message passing: server calls the name_attach() function to register the name in the namepace and to create a channel. Next, the client calls the name_open() function to open the named server connection.
+Phase II requires the fewest changes. The same three functions are called:
+• client sends message to client: MsgSend()
+• server received message from client: MsgReceive()
+• server replies to client: MsgReply()
+The only change is to MsgReceive(): you’ll need to deference the variable of type *name_attach_t to get the channel ID, which is the function’s first parameter.
+In Phase III, the server calls the name_detach() function to remove the name from the namespace and destroy the channel, and the client calls the name_close() function to close a server connection that was opened by name_open().
+Refactor the Door-Entry-System (DES) to use QNX’s Namespace
+Every computer scientist needs to know how to refactor code. In the context of software development, refactoring code means to improve the code without introducing new functional requirements.
+In this lab, you’re to refactor your solution to Assignment #1 – Door Entry System (DES) such that the inputs, controller and display programs no longer rely on the ND/PID/CHID, and instead make use of QNX’s namespace.
 Running the Programs
-
-Startup the device: # myDevice &
-Startup the controller: # myController &
-Then you will be able to test your programs using a command scripts containing commands such as:
-
-echo status value > /dev/local/mydevice
-echo alert 1 > /dev/local/mydevice
-echo status closed > /dev/local/mydevice
-echo alert 2 > /dev/local/mydevice
-
-The device should operate as follows:
-1. update its internal status buffer with: value. Where value is a string of characters following the status <space> prefix. Please note a blank space separates status and value. Allow for up to 255 characters in the value. This value will then be available to the controller if the device is read (e.g., using fscanf(….)).
-2. send an “alert”, in the form of a pulse to the controller, to notify that the alert <small_int> event has been written to the device. From above, I use the echo command to write to the device, /dev/local/mydevice (FQN – fully qualified name). The value of <small_int> must be in the range 1 to 99, inclusive. You can assume integer values are sent; you cannot assume the integer value is in the range of 1 – 99 (inclusive). If the integer value is outside this range, print a warning message (“Integer value is not between 1 and 99 (inclusive)”), but do not terminate --- the device program is to continue running (i.e. its fault tolerant, well a little at least).
-Upon startup, the myController program should read the status of the device, and then whenever a pulse is received, the myController program should output the value of the integer sent with the pulse, read the status of the device again, and output a message to the console with the current device status.
-
+In PuTTY session #1, startup the display to see the human friendly output: # assign1_display
+In PuTTY session #2, startup the controller: # assign1_controller
+In VMware’s console window, run the inputs program using file re-direction: # assign1_inputs < leavingRightData.txt
+where leavingRightData.txt is a text file that contains:
+rs
+54321
+gru
+ro
+ws
+321
+rc
+grl
+glu
+lo
+lc
+gll
+exit
+The run-time behaviour of DES should be exactly the same when compared to the run-time behaviour of the non-namespace version. As well, all three programs should gracefully terminate on the exit input event.
 Marking Scheme
-The lab is marked out of 30 points.
-• 10 marks for myController
-o Must gracefully terminate (call name_detach() & exit with success) on: status closed followed by alert <small_int>
-• 10 marks for myDevice
-o Domain range check of alert’s <small_int>
-• 10 marks for demonstration by screen-shot(s)
-
-Marks will be deducted for not checking return codes for errors or not properly freeing any dynamic memory you allocate. Comments are not necessary, but are always welcome.
-
+The lab is marked out of 10 points.
+• 2 marks for assign1_display
+o calls name_attach() to register a name in the namespace and to create a channel to receive messages from the controller
+o calls name_detach()
+• 3 marks for assign1_controller
+o Calls name_open() to open a name for the server connection managed by display
+o calls name_attach() to register a name in the namespace and to create a channel to receive messages from inputs
+o calls name_close()
+o calls name_detach()
+• 2 marks for assign1_inputs
+o calls name_open() to open a name for the server connection managed by the controller
+o calls name_close()
+• 3 marks for demonstration by screen-shot
+Special note if you did not complete Assignment #1: for a B grade (i.e. 7/10), refactor your Lab #4 – Message Passing to use QNX’s namespace.
+Special note if you did not complete Assignment #1, nor did you complete Lab #4: for a C grade (i.e. 6/10), refactor the reference example demonstrating message passing. The reference example can be found on Brightspace.
 Deliverables
-Prepare a zip-file that contents the following items:
+Prepare a zip-file that contains the following items:
+1. Take a single, composite screen-shot of your Desktop showing the following scenario:
+PuTTY #1: display
+PuTTY #2: controller
+VMware Console window: inputs < leavingRightData.txt
+2. Source code for the display program.
+3. Source code for the controller program.
+4. Source code for the inputs program.
+5. Name your zip-file according to your Algonquin College username: cst8244_lab5_yourUsername.zip
+For Example, cst8244_lab5_bond0007.zip
+6. Upload and submit your zip-file to Brightspace before the due date.
 
-1. Make a set of screen-shots showing the following scenario:
-echo status value > /dev/local/mydevice
-echo alert 1 > /dev/local/mydevice
-echo status closed > /dev/local/mydevice
-echo alert 2 > /dev/local/mydevice
-Additionally, your screenshot must show that the controller gracefully terminated.
-2. Export your Momementics IDE projects as a zip-archive file.
-3. A “README.txt” file reporting the status of your lab. Follow this template:
-Title {give your work a title}
-Author
-{Please sign your work. For example: @author Gerald.Hurdle@AlgonquinCollege.com}
-Status
-{Tell me the status of your project: complete, missing requirements, not working, etc.}
-Known Issues
-{Tell me of any known issues that you’ve encountered.}
-Expected Grade
-{Tell me your expected grade.}
-4. Name your zip-file according to your Algonquin College username: cst8244_lab6_yourUsername.zip
-For Example, cst8244_lab6_bond0007.zip
-5. Upload and submit your zip-file to Brightspace before the due date.
-Reference Screenshot
 Compare your screenshot to mine:
