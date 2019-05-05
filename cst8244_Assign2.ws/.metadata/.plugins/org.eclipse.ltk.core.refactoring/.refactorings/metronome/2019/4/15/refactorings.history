@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;metronome/src/myDevice.c&apos; to &apos;metronome.c&apos;" description="Rename resource &apos;myDevice.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/myDevice.c" name="metronome.c" stamp="1555185805645" updateReferences="true"/>
+</session>

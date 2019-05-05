@@ -1,0 +1,18 @@
+16:00:46 **** Incremental Build of configuration x86_64-debug for project myDevice ****
+make -j7 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/myDevice.d,-MT,build/x86_64-debug/src/myDevice.o -o build/x86_64-debug/src/myDevice.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/myDevice.c
+src/myDevice.c: In function 'main':
+src/myDevice.c:123:67: warning: passing argument 5 of 'resmgr_attach' makes integer from pointer without a cast [-Wint-conversion]
+  id = resmgr_attach(dpp, NULL, "/dev/local/mydevice", _FTYPE_ANY, NULL,
+                                                                   ^
+In file included from src/myDevice.c:8:0:
+/Users/TheKing/qnx700_2/target/qnx7/usr/include/sys/dispatch.h:99:5: note: expected 'unsigned int' but argument is of type 'void *'
+ int resmgr_attach(dispatch_t *dpp, resmgr_attr_t *attr, const char *path,
+     ^
+src/myDevice.c:112:6: warning: variable 'id' set but not used [-Wunused-but-set-variable]
+  int id;
+      ^
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/myDevice   build/x86_64-debug/src/myDevice.o  
+
+16:00:46 Build Finished (took 192ms)
+
