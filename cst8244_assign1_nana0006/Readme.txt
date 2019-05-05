@@ -12,13 +12,16 @@ Details:
 4. Assume that the door is self-closing (but not self-locking), and that an event (see below under Step 4.a.) will be sent to the controller when the status of the door changes.
 
 Steps:
-1. (20%) Design a state machine for the system. Provide the following:
+
+1. (20%) Design a STATE MACHINE for the system. Provide the following:
 a. A list of inputs, including persistent saved data (e.g., the weight of the person on entry)
 b. A list of outputs, including persistent saved data.
 c. A list of conditions / events that cause transitions between states.
 d. A list of states
 e. A diagram showing the state machine.
+
 2. (20%) Write a program assign1_display that displays the status of the system – which door is open / closed, if there is a user waiting to enter from the left or right, etc. The program should run in the background and print out status information to the console each time a status update is sent to it using a message from the assign1_controller program. The assign1_display program can print out its process id when it first starts up (as in Lab4).
+
 3. (40%) Write a program assign1_controller that runs in the background, operates the state machine for the controller, and directly maintains the persistent data and status for the controller. It should have separate functions for the state handler for each state. Each state handler should perform the actions required for that state, send a message to the assign1_display program to update the display (as required), and then check the exit conditions for that state. When an exit condition is met, the state handler should return the function pointer for the next state handler. This does not have to be done using a lookup table but could be implemented that way. The assign1_controller program should print out its process id when it first starts up.
 
 CST8244 – Real-Time Programming
@@ -70,12 +73,19 @@ The controller is running as process_id 77235.
 Enter the device (ls= left scan, rs= right scan, ws= weight scale, lo =left open, ro=right open, lc = left closed, rc = right closed , gru = guard right unlock, grl = guard right lock, gll=guard left lock, glu = guard left unlock)
 …..
 Steps:
+
 1. Get Lab 4 working! (Use it as a model).
+
 2. Design the state machine.
+
 3. Create a new Momentics workspace named: cst8244_assign1
+
 4. Create new projects named assign1_display, assign1_controller, and assign1_inputs. Create these projects as QNX Projects > QNX Executable.
+
 5. Create an include file “mystruct.h” to define the typedefs for structs to be used for sending requests and receiving responses, and for storing the status information.
+
 6. Create the assign1_controller, assign1_display, and assign1_inputs programs.
+
 7. Test your programs.
 
 CST8244 – Real-Time Programming
